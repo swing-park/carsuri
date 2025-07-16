@@ -12,32 +12,41 @@ export default function HeroSection() {
     service: "",
     address: "",
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsSubmitting(true)
 
     try {
-      // API 연동 코드
-      const response = await fetch("/api/booking", {
+      // Next.js API 라우트를 통해 요청
+      const response = await fetch("/api/care-inquiry", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          carNumber: formData.carNumber,
+          service: formData.service,
+          address: formData.address,
+        }),
       })
 
       if (response.ok) {
         const result = await response.json()
         console.log("예약 성공:", result)
-        // 성공 처리 로직
         alert("예약이 완료되었습니다!")
+        setFormData({ carNumber: "", service: "", address: "" })
       } else {
-        console.error("예약 실패")
+        const errorData = await response.json()
+        console.error("예약 실패:", errorData)
         alert("예약에 실패했습니다. 다시 시도해주세요.")
       }
     } catch (error) {
       console.error("API 호출 오류:", error)
-      alert("서버 오류가 발생했습니다.")
+      alert("네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -83,6 +92,7 @@ export default function HeroSection() {
                   onChange={(e) => setFormData({ ...formData, carNumber: e.target.value })}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
+                  disabled={isSubmitting}
                 />
               </div>
               <div>
@@ -90,6 +100,7 @@ export default function HeroSection() {
                 <Select
                   value={formData.service}
                   onValueChange={(value) => setFormData({ ...formData, service: value })}
+                  disabled={isSubmitting}
                 >
                   <SelectTrigger className="w-full px-4 py-3 h-12">
                     <SelectValue placeholder="서비스를 선택해주세요" />
@@ -111,13 +122,15 @@ export default function HeroSection() {
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
+                disabled={isSubmitting}
               />
             </div>
             <Button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 text-lg font-semibold"
+              disabled={isSubmitting}
             >
-              {"예약하기"}
+              {isSubmitting ? "예약 중..." : "예약하기"}
             </Button>
           </form>
 

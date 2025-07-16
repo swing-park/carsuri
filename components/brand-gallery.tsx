@@ -2,6 +2,8 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
+import BookingModal from "./booking-modal"
 
 const brands = [
   {
@@ -151,6 +153,8 @@ const brands = [
 ]
 
 export default function BrandGallery() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   const handleKakaoContact = () => {
     window.location.href = "https://pf.kakao.com/_xfxaaAxb/chat"
   }
@@ -170,73 +174,78 @@ export default function BrandGallery() {
   )
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">{"주요 브랜드 전용관"}</h2>
-        </div>
+    <>
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{"주요 브랜드 전용관"}</h2>
+          </div>
 
-        {/* 4개씩 그리드로 표시 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {allServices.map((service, index) => (
-            <Card
-              key={index}
-              className="hover:shadow-xl transition-all duration-300 cursor-pointer group border border-gray-200"
-            >
-              <CardContent className="p-0">
-                <div className="relative overflow-hidden">
-                  <img
-                    src={service.image || "/placeholder.svg?height=200&width=400"}
-                    alt={`${service.brandName} ${service.type}`}
-                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                </div>
-                <div className="p-4">
-                  {/* Brand Header */}
-                  <div className="flex items-center space-x-2 mb-3">
+          {/* 4개씩 그리드로 표시 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            {allServices.map((service, index) => (
+              <Card
+                key={index}
+                onClick={() => setIsModalOpen(true)}
+                className="hover:shadow-xl transition-all duration-300 cursor-pointer group border border-gray-200"
+              >
+                <CardContent className="p-0">
+                  <div className="relative overflow-hidden">
                     <img
-                      src={service.brandLogo || "/placeholder.svg"}
-                      alt={service.brandName}
-                      className="w-6 h-6 object-contain"
+                      src={service.image || "/placeholder.svg?height=200&width=400"}
+                      alt={`${service.brandName} ${service.type}`}
+                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
                     />
-                    <span className="text-sm font-medium text-gray-700">{service.brandName}</span>
                   </div>
+                  <div className="p-4">
+                    {/* Brand Header */}
+                    <div className="flex items-center space-x-2 mb-3">
+                      <img
+                        src={service.brandLogo || "/placeholder.svg"}
+                        alt={service.brandName}
+                        className="w-6 h-6 object-contain"
+                      />
+                      <span className="text-sm font-medium text-gray-700">{service.brandName}</span>
+                    </div>
 
-                  <h4 className="font-bold text-gray-900 mb-3">{service.type}</h4>
+                    <h4 className="font-bold text-gray-900 mb-3">{service.type}</h4>
 
-                  <div className="space-y-1">
-                    <div className="text-lg font-bold text-gray-900">{service.price}</div>
-                    <div className="text-sm text-blue-600">
-                      {"앱 구매시 "}
-                      <span className="line-through text-gray-500">{service.originalPrice}</span>
+                    <div className="space-y-1">
+                      <div className="text-lg font-bold text-gray-900">{service.price}</div>
+                      <div className="text-sm text-blue-600 line-through">{service.originalPrice}</div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
 
-        {/* Bottom CTA */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl p-12 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">{"다른 브랜드의 출장 정비가 필요하신가요?"}</h3>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            {"위에 없는 브랜드도 전문 정비사가 직접 방문하여 서비스를 제공합니다. 언제든지 문의해주세요."}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button onClick={handleKakaoContact} className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg">
-              {"카카오톡 문의"}
-            </Button>
-            <Button
-              onClick={handlePhoneContact}
-              variant="outline"
-              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 text-lg bg-transparent"
-            >
-              {"전화 문의"}
-            </Button>
+          {/* Bottom CTA */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl p-12 text-center">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">{"다른 브랜드의 출장 정비가 필요하신가요?"}</h3>
+            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+              {"위에 없는 브랜드도 전문 정비사가 직접 방문하여 서비스를 제공합니다. 언제든지 문의해주세요."}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                onClick={handleKakaoContact}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg"
+              >
+                {"카카오톡 문의"}
+              </Button>
+              <Button
+                onClick={handlePhoneContact}
+                variant="outline"
+                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 text-lg bg-transparent"
+              >
+                {"전화 문의"}
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   )
 }

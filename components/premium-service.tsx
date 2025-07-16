@@ -1,3 +1,5 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CheckCircle } from "lucide-react"
@@ -12,6 +14,20 @@ const features = [
 ]
 
 export default function PremiumService() {
+  const scrollToBookingForm = () => {
+    const heroSection = document.querySelector('input[placeholder="예) 12가 3456"]')
+    if (heroSection) {
+      heroSection.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      })
+      // 폼에 포커스 주기
+      setTimeout(() => {
+        ;(heroSection as HTMLInputElement).focus()
+      }, 500)
+    }
+  }
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,7 +58,9 @@ export default function PremiumService() {
                   ))}
                 </div>
 
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3">{"점검 서비스 신청"}</Button>
+                <Button onClick={scrollToBookingForm} className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3">
+                  {"점검 서비스 신청"}
+                </Button>
               </CardContent>
             </Card>
           </div>

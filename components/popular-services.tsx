@@ -1,70 +1,61 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Star } from "lucide-react"
 
 const services = [
   {
     id: 1,
-    title: "출장 엔진오일 예약",
-    subtitle: "정품 엔진오일로 교체",
+    title: "국산차 출장 엔진오일",
+    category: "출장 엔진오일 예약",
     tag: "국산차",
-    price: "29,000원",
-    originalPrice: "35,000원",
-    discount: "17%",
-    bgColor: "bg-blue-50",
-    features: ["정품 오일 사용", "필터 교체 포함", "30분 내 완료"],
-    rating: 4.9,
-    reviews: 1234,
+    tagColor: "bg-blue-600",
+    price: "73,600원~",
+    originalPrice: "63,600원~",
+    rating: 4.98,
+    reviews: "23,661건",
+    image: "/popular_1.webp",
   },
   {
     id: 2,
-    title: "출장 배터리 예약",
-    subtitle: "고품질 배터리로 교체",
+    title: "수입차 출장 엔진오일",
+    category: "출장 엔진오일 예약",
     tag: "수입차",
-    price: "89,000원",
-    originalPrice: "120,000원",
-    discount: "26%",
-    bgColor: "bg-gray-50",
-    features: ["정품 배터리 사용", "무료 점검 포함", "1년 품질보증"],
-    rating: 4.8,
-    reviews: 892,
+    tagColor: "bg-orange-500",
+    price: "127,400원~",
+    originalPrice: "117,400원~",
+    rating: 4.97,
+    reviews: "6,978건",
+    image: "/popular_2.webp",
   },
   {
     id: 3,
-    title: "종합 점검 서비스",
-    subtitle: "전문가의 꼼꼼한 점검",
-    tag: "전차종",
-    price: "49,000원",
-    originalPrice: "70,000원",
-    discount: "30%",
-    bgColor: "bg-green-50",
-    features: ["50개 항목 점검", "점검 리포트 제공", "사후 상담"],
-    rating: 4.9,
-    reviews: 567,
+    title: "국산차 출장 배터리",
+    category: "출장 배터리 예약",
+    tag: "국산차",
+    tagColor: "bg-blue-600",
+    price: "77,000원~",
+    originalPrice: "67,000원~",
+    rating: 4.96,
+    reviews: "5,766건",
+    image: "/popular_3.webp",
   },
   {
     id: 4,
-    title: "긴급 출동 서비스",
-    subtitle: "24시간 긴급 출동",
-    tag: "긴급",
-    price: "15,000원",
-    originalPrice: "25,000원",
-    discount: "40%",
-    bgColor: "bg-red-50",
-    features: ["24시간 대기", "30분 내 출동", "현장 수리"],
-    rating: 4.7,
-    reviews: 2341,
+    title: "수입차 출장 배터리",
+    category: "출장 배터리 예약",
+    tag: "수입차",
+    tagColor: "bg-orange-500",
+    price: "87,000원~",
+    originalPrice: "77,000원~",
+    rating: 4.97,
+    reviews: "1,196건",
+    image: "/popular_4.webp",
   },
 ]
 
 export default function PopularServices() {
   return (
-    <section className="py-20 bg-white">
+    <section id="popular-services" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">{"인기 서비스"}</h2>
-          <p className="text-xl text-gray-600">{"고객들이 가장 많이 선택하는 서비스입니다"}</p>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service) => (
             <Card
@@ -73,24 +64,17 @@ export default function PopularServices() {
             >
               <CardContent className="p-0">
                 <div className="relative">
-                  {/* Discount Badge */}
-                  <div className="absolute top-4 right-4 z-10">
-                    <Badge className="bg-red-500 text-white font-bold px-2 py-1">
-                      {service.discount} {"할인"}
-                    </Badge>
-                  </div>
-
                   {/* Service Tag */}
                   <div className="absolute top-4 left-4 z-10">
-                    <Badge variant="secondary" className="bg-blue-600 text-white font-medium">
+                    <span className={`${service.tagColor} text-white px-3 py-1 rounded-full text-sm font-medium`}>
                       {service.tag}
-                    </Badge>
+                    </span>
                   </div>
 
                   {/* Image Box */}
-                  <div className={`${service.bgColor} h-48 flex items-center justify-center overflow-hidden`}>
+                  <div className="bg-gray-50 h-48 flex items-center justify-center overflow-hidden">
                     <img
-                      src="/1.jpg"
+                      src={service.image || "/placeholder.svg"}
                       alt={service.title}
                       className="h-32 w-auto object-contain transition-transform duration-300 group-hover:scale-110"
                     />
@@ -98,33 +82,24 @@ export default function PopularServices() {
                 </div>
 
                 <div className="p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-1">{service.title}</h3>
-                  <p className="text-sm text-gray-600 mb-4">{service.subtitle}</p>
-
-                  {/* Features */}
-                  <ul className="text-xs text-gray-500 mb-4 space-y-1">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center">
-                        <div className="w-1 h-1 bg-blue-600 rounded-full mr-2"></div>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="text-sm text-gray-600 mb-1">{service.category}</p>
+                  <h3 className="text-lg font-bold text-gray-900 mb-4">{service.title}</h3>
 
                   {/* Rating */}
                   <div className="flex items-center mb-4">
-                    <div className="flex items-center">
-                      <span className="text-yellow-400">★</span>
-                      <span className="text-sm font-medium ml-1">{service.rating}</span>
-                    </div>
-                    <span className="text-xs text-gray-500 ml-2">({service.reviews.toLocaleString()})</span>
+                    <Star className="h-4 w-4 text-red-500 fill-current mr-1" />
+                    <span className="text-sm font-medium text-gray-900 mr-1">{service.rating}</span>
+                    <span className="text-xs text-gray-500">이용후기 {service.reviews}</span>
                   </div>
 
                   {/* Price */}
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-xl font-bold text-blue-600">{service.price}</span>
-                      <span className="text-sm text-gray-500 line-through ml-2">{service.originalPrice}</span>
+                      <span className="text-xl font-bold text-gray-900">{service.price}</span>
+                      <div className="text-sm text-blue-600">
+                        {"앱 구매시 "}
+                        <span className="line-through text-gray-500">{service.originalPrice}</span>
+                      </div>
                     </div>
                   </div>
                 </div>

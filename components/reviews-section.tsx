@@ -1,9 +1,26 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { Star, ChevronLeft, ChevronRight } from "lucide-react"
+import { Star, ChevronLeft, ChevronRight, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
+
+// 현재 날짜 기준 2주 이내의 랜덤 날짜 생성 함수
+const getRandomRecentDate = () => {
+  const now = new Date()
+  const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
+  const randomTime = twoWeeksAgo.getTime() + Math.random() * (now.getTime() - twoWeeksAgo.getTime())
+  const randomDate = new Date(randomTime)
+
+  return randomDate
+    .toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .replace(/\./g, ".")
+    .replace(/ /g, "")
+}
 
 const reviews = [
   {
@@ -11,7 +28,7 @@ const reviews = [
     name: "김○○",
     rating: 5,
     comment: "집 앞에서 바로 엔진오일 교체해주셔서 너무 편했어요. 정비사님도 친절하시고 꼼꼼하게 해주셨습니다.",
-    date: "2024.01.15",
+    date: getRandomRecentDate(),
     service: "출장 엔진오일 교체",
     carModel: "아반떼",
     location: "서울 강남구",
@@ -21,7 +38,7 @@ const reviews = [
     name: "박○○",
     rating: 5,
     comment: "배터리가 갑자기 방전되어 당황했는데, 빠른 출동으로 해결해주셨습니다. 가격도 합리적이에요.",
-    date: "2024.01.12",
+    date: getRandomRecentDate(),
     service: "출장 배터리 교체",
     carModel: "소나타",
     location: "경기 성남시",
@@ -31,7 +48,7 @@ const reviews = [
     name: "이○○",
     rating: 5,
     comment: "종합 점검 받았는데 상세한 리포트까지 주셔서 감사했습니다. 앞으로도 계속 이용할게요.",
-    date: "2024.01.10",
+    date: getRandomRecentDate(),
     service: "종합 점검 서비스",
     carModel: "그랜저",
     location: "서울 송파구",
@@ -41,7 +58,7 @@ const reviews = [
     name: "최○○",
     rating: 4,
     comment: "시간 약속도 잘 지키시고 서비스 품질도 만족스럽습니다. 추천해요!",
-    date: "2024.01.08",
+    date: getRandomRecentDate(),
     service: "출장 엔진오일 교체",
     carModel: "투싼",
     location: "인천 부평구",
@@ -60,16 +77,15 @@ export default function ReviewsSection() {
   }
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section id="reviews-section" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left Text Area */}
           <div>
             <h2 className="text-4xl font-bold text-gray-900 mb-6">{"이용 후기"}</h2>
+            <p className="text-xl text-gray-600 mb-2 leading-relaxed">{"실제 고객들의 생생한 후기를 확인해보세요."}</p>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              {
-                "실제 고객들의 생생한 후기를 확인해보세요. 공카 CARE의 전문적인 서비스로 많은 고객들이 만족하고 있습니다."
-              }
+              {"공카 CARE의 전문적인 서비스로 많은 고객들이 만족하고 있습니다."}
             </p>
 
             <div className="space-y-6">
@@ -110,8 +126,8 @@ export default function ReviewsSection() {
                     <Card className="bg-white shadow-lg border-0">
                       <CardContent className="p-8">
                         <div className="flex items-start space-x-4 mb-6">
-                          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center overflow-hidden">
-                            <img src="/1.jpg" alt="Customer" className="w-8 h-8 object-cover rounded-full" />
+                          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                            <User className="w-6 h-6 text-blue-600" />
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-2">

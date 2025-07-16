@@ -1,6 +1,56 @@
+"use client"
+
+import type React from "react"
+
 import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from "react"
 
 export default function HeroSection() {
+  const [formData, setFormData] = useState({
+    carNumber: "",
+    service: "",
+    address: "",
+  })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      // API 연동 코드
+      const response = await fetch("/api/booking", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        console.log("예약 성공:", result)
+        // 성공 처리 로직
+        alert("예약이 완료되었습니다!")
+      } else {
+        console.error("예약 실패")
+        alert("예약에 실패했습니다. 다시 시도해주세요.")
+      }
+    } catch (error) {
+      console.error("API 호출 오류:", error)
+      alert("서버 오류가 발생했습니다.")
+    }
+  }
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      })
+    }
+  }
+
   return (
     <section
       className="relative py-20 lg:py-32 bg-cover bg-center bg-no-repeat min-h-[600px] flex items-center"
@@ -22,23 +72,34 @@ export default function HeroSection() {
           </div>
 
           {/* 예약 폼 */}
-          <div className="bg-white rounded-2xl shadow-xl p-6 mb-8">
+          <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">차량번호</label>
                 <input
                   type="text"
                   placeholder="예) 12가 3456"
+                  value={formData.carNumber}
+                  onChange={(e) => setFormData({ ...formData, carNumber: e.target.value })}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">서비스 선택</label>
-                <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                  <option>출장 엔진오일 교체</option>
-                  <option>출장 배터리 교체</option>
-                  <option>종합 점검</option>
-                </select>
+                <Select
+                  value={formData.service}
+                  onValueChange={(value) => setFormData({ ...formData, service: value })}
+                >
+                  <SelectTrigger className="w-full px-4 py-3 h-12">
+                    <SelectValue placeholder="서비스를 선택해주세요" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="engine-oil">출장 엔진오일 교체</SelectItem>
+                    <SelectItem value="battery">출장 배터리 교체</SelectItem>
+                    <SelectItem value="inspection">종합 점검</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             <div className="mb-4">
@@ -46,25 +107,35 @@ export default function HeroSection() {
               <input
                 type="text"
                 placeholder="서비스 받을 주소를 입력해주세요"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
               />
             </div>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 text-lg font-semibold">
+            <Button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 text-lg font-semibold"
+            >
               {"예약하기"}
             </Button>
-          </div>
+          </form>
 
           <div className="flex flex-col sm:flex-row gap-4">
             <Button
+              type="button"
               size="lg"
               variant="outline"
+              onClick={() => scrollToSection("popular-services")}
               className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 bg-transparent"
             >
               {"서비스 안내"}
             </Button>
             <Button
+              type="button"
               size="lg"
               variant="outline"
+              onClick={() => scrollToSection("reviews-section")}
               className="border-2 border-gray-400 text-gray-700 hover:bg-gray-700 hover:text-white px-8 py-3 bg-transparent"
             >
               {"이용 후기"}

@@ -19,8 +19,7 @@ export default function HeroSection() {
     setIsSubmitting(true)
 
     try {
-      // Next.js API 라우트를 통해 요청
-      const response = await fetch("/api/care-inquiry", {
+      const response = await fetch("https://api-v2.gongcarapp.com/partner-company/care-inquiry", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,14 +32,27 @@ export default function HeroSection() {
       })
 
       if (response.ok) {
-        const result = await response.json()
-        console.log("예약 성공:", result)
-        alert("예약이 완료되었습니다!")
+        // 응답 본문이 없는 성공 (예: 204 No Content)을 처리
+        if (response.status === 204 || response.headers.get("Content-Length") === "0") {
+          console.log("예약 성공: 응답 본문 없음 (No Content)")
+          alert("예약이 완료되었습니다!")
+        } else {
+          const result = await response.json()
+          console.log("예약 성공:", result)
+          alert("예약이 완료되었습니다!")
+        }
         setFormData({ carNumber: "", service: "", address: "" })
       } else {
-        const errorData = await response.json()
+        // 오류 응답 처리: JSON 본문이 있을 수도 있고 없을 수도 있음
+        let errorData = { message: "알 수 없는 오류가 발생했습니다." }
+        try {
+          errorData = await response.json()
+        } catch (jsonError) {
+          console.warn("오류 응답 JSON 파싱 실패:", jsonError)
+          // JSON 파싱 실패 시 기본 오류 메시지 사용
+        }
         console.error("예약 실패:", errorData)
-        alert("예약에 실패했습니다. 다시 시도해주세요.")
+        alert(`예약에 실패했습니다: ${errorData.message || "다시 시도해주세요."}`)
       }
     } catch (error) {
       console.error("API 호출 오류:", error)
@@ -106,9 +118,9 @@ export default function HeroSection() {
                     <SelectValue placeholder="서비스를 선택해주세요" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="engine-oil">출장 엔진오일 교체</SelectItem>
-                    <SelectItem value="battery">출장 배터리 교체</SelectItem>
-                    <SelectItem value="inspection">종합 점검</SelectItem>
+                    <SelectItem value="출장 엔진오일 교체">출장 엔진오일 교체</SelectItem>
+                    <SelectItem value="출장 배터리 교체">출장 배터리 교체</SelectItem>
+                    <SelectItem value="종합 점검">종합 점검</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

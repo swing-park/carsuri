@@ -1,30 +1,66 @@
-# Korean website clone
+# 공카 CARE — 출장 자동차 정비 예약 플랫폼
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+차량 정비를 받으려면 정비소를 찾고, 예약하고, 직접 차를 끌고 가야 했던 게 당연한 일이었습니다. 공카 CARE는 그 과정을 뒤집었습니다. 전문 정비사가 고객이 있는 곳으로 직접 찾아가는 방식입니다.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/swingparks-projects/v0-korean-website-clone)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/1wb7Cgs8Sse)
+이 레포지토리는 공카 CARE의 서비스 소개 및 예약 접수 웹사이트 소스입니다.
 
-## Overview
+---
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+## 어떤 서비스인가요
 
-## Deployment
+주차장이든, 집 앞이든, 회사 주차장이든 차가 있는 곳이면 어디서든 정비를 받을 수 있습니다. 현재 제공하는 주요 서비스는 아래와 같습니다.
 
-Your project is live at:
+- **출장 엔진오일 교체** — 공임 포함, 현장에서 바로 처리
+- **출장 배터리 교체** — 방전 전 미리, 또는 긴급 상황에서도 대응
+- **종합 점검** — 엔진룸부터 타이어 공기압, 각종 소모품 상태까지 한 번에
+- **24시간 긴급 출동** — 갑작스러운 상황에도 연락 가능
 
-**[https://vercel.com/swingparks-projects/v0-korean-website-clone](https://vercel.com/swingparks-projects/v0-korean-website-clone)**
+현대, 기아, 제네시스, 르노삼성, 벤츠, BMW, 아우디, 렉서스 등 국산·수입차 구분 없이 차종별 맞춤 견적을 제공합니다.
 
-## Build your app
+---
 
-Continue building your app on:
+## 기술 스택
 
-**[https://v0.dev/chat/projects/1wb7Cgs8Sse](https://v0.dev/chat/projects/1wb7Cgs8Sse)**
+| 항목 | 내용 |
+|------|------|
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| UI | shadcn/ui (Radix UI 기반) |
+| Form | React Hook Form + Zod |
+| 배포 | Vercel |
 
-## How It Works
+---
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## 로컬 실행
+
+```bash
+pnpm install
+pnpm dev
+```
+
+`http://localhost:3000` 에서 확인할 수 있습니다.
+
+---
+
+## 예약 API 연동
+
+예약 접수는 아래 엔드포인트로 전송됩니다.
+
+```
+POST https://api-v2.gongcarapp.com/partner-company/care-inquiry
+```
+
+**요청 형식**
+
+```json
+{
+  "carNumber": "12가 3456",
+  "service": "출장 엔진오일 교체",
+  "address": "서울시 강남구 테헤란로 123"
+}
+```
+
+---
+
+**공카 CARE** · 경기도 성남시 분당구 대왕판교로 950번길 24 · 사업자등록번호 698-87-01826
